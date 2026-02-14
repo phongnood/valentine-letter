@@ -3,150 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For My Princess ❤️</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-pink: #ff758f;
-            --dark-pink: #c9184a;
-            --glass-bg: rgba(255, 255, 255, 0.8);
-        }
-
-        body {
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #fce4ec 0%, #ffd1dc 100%);
-            font-family: 'Quicksand', sans-serif;
-            overflow: hidden;
-        }
-
-        /* Hiệu ứng kính mờ cho container */
-        .glass-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 24px;
-            padding: 40px;
-            width: 350px;
-            text-align: center;
-            box-shadow: 0 15px 35px rgba(255, 77, 109, 0.2);
-            z-index: 2;
-            transition: transform 0.3s ease;
-        }
-
-        h1 {
-            font-family: 'Dancing Script', cursive;
-            font-size: 2.5rem;
-            color: var(--dark-pink);
-            margin-bottom: 20px;
-        }
-
-        .message {
-            color: #555;
-            font-size: 1rem;
-            line-height: 1.6;
-            margin-bottom: 30px;
-        }
-
-        /* Button hiện đại với đổ bóng rực rỡ */
-        .btn-gift {
-            background: linear-gradient(45deg, var(--primary-pink), var(--dark-pink));
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 50px;
-            font-weight: 600;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255, 117, 143, 0.4);
-            transition: all 0.3s ease;
-            width: 100%;
-        }
-
-        .btn-gift:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(255, 117, 143, 0.6);
-        }
-
-        /* Coupon Box hiện đại */
-        #coupon {
-            display: none;
-            margin-top: 20px;
-            padding: 20px;
-            background: #fff;
-            border-radius: 15px;
-            border: 2px dashed var(--primary-pink);
-            animation: fadeIn 0.8s ease;
-        }
-
-        .coupon-code {
-            display: block;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--dark-pink);
-            margin-top: 10px;
-            letter-spacing: 2px;
-        }
-
-        /* Hiệu ứng trái tim hiện đại */
-        .heart {
-            position: absolute;
-            pointer-events: none;
-            animation: float Up 4s ease-in infinite;
-            opacity: 0.6;
-        }
-
-        @keyframes floatUp {
-            0% { transform: translateY(110vh) scale(0); opacity: 0; }
-            50% { opacity: 0.8; }
-            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
-        }
-    </style>
+    <title>Hộp Quà Bí Mật 💌</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="glass-card">
-        <h1>Happy Valentine's</h1>
-        <div class="message">
-            Gửi em, cô gái tuyệt vời nhất của anh.<br><br>
-            Cảm ơn em vì đã luôn ở đó, dù đôi khi anh thật ngốc và làm em buồn. Khoảng cách không làm anh yêu em ít đi, mà chỉ làm anh trân trọng em nhiều hơn. 💖
+    <div class="container">
+        <div class="envelope-wrapper" id="envelope">
+            <div class="envelope">
+                <div class="flap"></div>
+                
+                <div class="body"></div>
+                
+                <div class="letter">
+                    <div class="content">
+                        <h3>Gửi bạn! 🌸</h3>
+                        <p>Một món quà nhỏ dành cho ngày hôm nay thêm ngọt ngào.</p>
+                        <button class="gift-btn" onclick="openGift(event)">🎁 Nhận Quà</button>
+                    </div>
+                </div>
+            </div>
         </div>
-        
-        <button class="btn-gift" id="mainBtn" onclick="revealGift()">Bấm để nhận món quà nhỏ 🎁</button>
-
-        <div id="coupon">
-            <small style="color: #999;">Đặc quyền của em hôm nay:</small>
-            <span class="coupon-code">[NHẬP_MÃ_GIAO_DỊCH_GAME]</span>
-            <p style="font-size: 0.8rem; margin-top: 10px;">(Dùng để nạp game hoặc đổi lấy 1 buổi hẹn hò nhé! 🫡)</p>
-        </div>
+        <p class="instruction">Chạm vào bao thư để mở nhé!</p>
     </div>
 
-    <script>
-        function revealGift() {
-            document.getElementById('coupon').style.display = 'block';
-            document.getElementById('mainBtn').style.display = 'none';
-        }
-
-        // Tạo hiệu ứng tim bay xịn hơn
-        function createHeart() {
-            const heart = document.createElement('div');
-            heart.classList.add('heart');
-            heart.innerHTML = ['❤️', '💖', '💝', '💕'][Math.floor(Math.random() * 4)];
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.fontSize = Math.random() * 20 + 10 + 'px';
-            heart.style.animationDuration = Math.random() * 3 + 2 + 's';
-            document.body.appendChild(heart);
-            setTimeout(() => heart.remove(), 4000);
-        }
-        setInterval(createHeart, 250);
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
