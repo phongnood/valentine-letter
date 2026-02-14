@@ -84,3 +84,69 @@
 
         .coupon-code {
             display: block;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark-pink);
+            margin-top: 10px;
+            letter-spacing: 2px;
+        }
+
+        /* Hiệu ứng trái tim hiện đại */
+        .heart {
+            position: absolute;
+            pointer-events: none;
+            animation: float Up 4s ease-in infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(110vh) scale(0); opacity: 0; }
+            50% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glass-card">
+        <h1>Happy Valentine's</h1>
+        <div class="message">
+            Gửi em, cô gái tuyệt vời nhất của anh.<br><br>
+            Cảm ơn em vì đã luôn ở đó, dù đôi khi anh thật ngốc và làm em buồn. Khoảng cách không làm anh yêu em ít đi, mà chỉ làm anh trân trọng em nhiều hơn. 💖
+        </div>
+        
+        <button class="btn-gift" id="mainBtn" onclick="revealGift()">Bấm để nhận món quà nhỏ 🎁</button>
+
+        <div id="coupon">
+            <small style="color: #999;">Đặc quyền của em hôm nay:</small>
+            <span class="coupon-code">[NHẬP_MÃ_GIAO_DỊCH_GAME]</span>
+            <p style="font-size: 0.8rem; margin-top: 10px;">(Dùng để nạp game hoặc đổi lấy 1 buổi hẹn hò nhé! 🫡)</p>
+        </div>
+    </div>
+
+    <script>
+        function revealGift() {
+            document.getElementById('coupon').style.display = 'block';
+            document.getElementById('mainBtn').style.display = 'none';
+        }
+
+        // Tạo hiệu ứng tim bay xịn hơn
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = ['❤️', '💖', '💝', '💕'][Math.floor(Math.random() * 4)];
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = Math.random() * 20 + 10 + 'px';
+            heart.style.animationDuration = Math.random() * 3 + 2 + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 4000);
+        }
+        setInterval(createHeart, 250);
+    </script>
+</body>
+</html>
