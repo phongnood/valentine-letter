@@ -6,9 +6,9 @@
     <title>Mở Hộp Quà Bí Mật 🎁</title>
     <style>
         :root {
-    --box-color: #ff4757;
-    --lid-color: #ff6b81;
-    --ribbon-color: #f1c40f;
+    --box-color: #e84118;
+    --lid-color: #c23616;
+    --ribbon-color: #fbc531;
 }
 
 body {
@@ -17,100 +17,128 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f7f1e3;
-    font-family: 'Segoe UI', sans-serif;
+    background-color: #f5f6fa;
+    font-family: 'Arial', sans-serif;
 }
 
 .container { text-align: center; }
 
 .gift-container {
     position: relative;
-    width: 200px;
-    height: 200px;
+    width: 300px; /* Tăng kích thước hộp */
+    height: 250px;
     cursor: pointer;
-    transition: transform 0.3s;
+    perspective: 1000px;
 }
 
 /* Thân hộp quà */
 .gift-box {
     position: absolute;
     bottom: 0;
-    width: 200px;
-    height: 150px;
+    width: 300px;
+    height: 200px;
     background-color: var(--box-color);
     border-radius: 0 0 10px 10px;
     z-index: 2;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.gift-box::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 100%;
+    background-color: var(--ribbon-color);
 }
 
 /* Nắp hộp quà */
 .gift-lid {
     position: absolute;
-    top: 20px;
+    top: 35px;
     left: -10px;
-    width: 220px;
-    height: 40px;
+    width: 320px;
+    height: 50px;
     background-color: var(--lid-color);
-    border-radius: 5px;
+    border-radius: 8px;
     z-index: 4;
-    transition: all 0.6s ease;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* Ruy băng */
-.gift-box::after, .gift-lid::after {
+.gift-lid::after {
     content: "";
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    width: 40px;
+    width: 50px;
     height: 100%;
     background-color: var(--ribbon-color);
 }
 
-/* Tờ thư bên trong */
+/* Tờ thư bên trong (To và dài hơn) */
 .letter {
     position: absolute;
-    top: 50px;
-    left: 10px;
-    width: 180px;
-    height: 130px;
+    top: 60px;
+    left: 20px;
+    width: 260px;
+    height: 180px;
     background-color: white;
-    padding: 15px;
-    box-sizing: border-box;
-    text-align: center;
-    border-radius: 5px;
-    z-index: 1; /* Nằm dưới hộp */
+    z-index: 1;
     transition: all 0.8s ease;
     opacity: 0;
-    box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    overflow: hidden; /* Để bo góc nội dung bên trong */
 }
 
-.letter h3 { margin: 0; color: #ff4757; font-size: 1.1rem; }
-.letter p { font-size: 0.8rem; color: #333; margin: 10px 0; }
+.letter-paper {
+    padding: 20px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.letter-content {
+    overflow-y: auto; /* Tạo thanh cuộn nếu văn bản dài */
+    flex-grow: 1;
+    margin: 10px 0;
+    text-align: left;
+    padding-right: 5px;
+}
+
+/* Tùy chỉnh thanh cuộn cho đẹp */
+.letter-content::-webkit-scrollbar { width: 5px; }
+.letter-content::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
+
+.letter h3 { margin: 0; color: var(--box-color); text-align: center; }
+.letter p { font-size: 0.95rem; color: #333; line-height: 1.5; }
 
 .claim-btn {
-    background-color: #2ed573;
+    background-color: #4cd137;
     color: white;
     border: none;
-    padding: 8px 12px;
+    padding: 10px;
     border-radius: 5px;
     cursor: pointer;
     font-weight: bold;
+    width: 100%;
 }
 
-/* HIỆU ỨNG KHI MỞ HỘP (Class .active) */
+/* KHI MỞ HỘP */
 .gift-container.active .gift-lid {
-    transform: translateY(-120px) rotate(-10deg);
-    opacity: 0.8;
+    transform: translateY(-150px) rotate(-15deg);
+    opacity: 0; /* Nắp biến mất cho thoáng */
 }
 
 .gift-container.active .letter {
-    transform: translateY(-130px);
+    transform: translateY(-220px); /* Đẩy thư lên cao hẳn để đọc */
+    height: 350px; /* Phóng to chiều dài tờ thư khi mở */
     opacity: 1;
-    z-index: 3; /* Trồi lên trên thân hộp */
+    z-index: 10;
 }
 
-.hint { margin-top: 40px; color: #888; font-weight: 500; }
+.hint { margin-top: 30px; color: #7f8c8d; }
     </style>
 </head>
 <body>
@@ -140,12 +168,9 @@ gift.addEventListener('click', function() {
 });
 
 function showReward(event) {
-    // Ngăn chặn sự kiện click vào hộp khi bấm nút nhận quà
     event.stopPropagation();
-    
-    // Bạn có thể đổi thông báo này thành mã giảm giá hoặc link quà tặng
-    alert("🎁 Bạn nhận được: Một Voucher giảm giá 99%!\nMã: HAPPYGIFT2026");
-}  
+    alert("🎉 Chúc mừng! Bạn đã nhận được món quà tinh thần lớn nhất! 🎉");
+}
     </script>
 </body>
 </html>
