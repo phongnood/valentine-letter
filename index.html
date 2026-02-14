@@ -4,7 +4,134 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hộp Quà Bí Mật 💌</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #ffe5ec; /* Màu nền hồng nhạt */
+    font-family: 'Arial', sans-serif;
+}
+
+.container {
+    text-align: center;
+}
+
+/* Bao thư */
+.envelope-wrapper {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    background-color: #ff758f; /* Màu bao thư */
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.envelope-wrapper:hover {
+    transform: translateY(-5px);
+}
+
+/* Nắp bao thư (Tam giác phía trên) */
+.flap {
+    position: absolute;
+    top: 0;
+    width: 0;
+    height: 0;
+    border-left: 150px solid transparent;
+    border-right: 150px solid transparent;
+    border-top: 110px solid #ff4d6d; /* Màu nắp đậm hơn */
+    transform-origin: top;
+    transition: transform 0.5s ease, z-index 0.2s;
+    z-index: 3;
+}
+
+/* Thân trước của bao thư (Tạo chiều sâu) */
+.body {
+    position: absolute;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    border-left: 150px solid #ff8fa3;
+    border-right: 150px solid #ff8fa3;
+    border-bottom: 100px solid #ffb3c1;
+    z-index: 2;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+/* Tờ giấy bên trong */
+.letter {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    width: 280px;
+    height: 170px;
+    background: white;
+    z-index: 1;
+    transition: transform 0.6s ease;
+    padding: 15px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+
+.content h3 {
+    margin: 0 0 10px 0;
+    color: #ff4d6d;
+    font-size: 1.2rem;
+}
+
+.content p {
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.4;
+}
+
+/* Nút nhận quà */
+.gift-btn {
+    background-color: #ff4d6d;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 20px;
+    margin-top: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.gift-btn:hover {
+    background-color: #c9184a;
+}
+
+/* HIỆU ỨNG KHI MỞ THƯ */
+.envelope-wrapper.open .flap {
+    transform: rotateX(180deg);
+    z-index: 0; /* Cho nắp ra sau khi mở */
+}
+
+.envelope-wrapper.open .letter {
+    transform: translateY(-110px); /* Đẩy tờ giấy lên */
+    z-index: 4; /* Đưa tờ giấy lên trên cùng */
+}
+
+.instruction {
+    margin-top: 30px;
+    color: #c9184a;
+    font-style: italic;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+    </style>
 </head>
 <body>
 
@@ -26,7 +153,15 @@
         </div>
         <p class="instruction">Chạm vào bao thư để mở nhé!</p>
     </div>
-
-    <script src="script.js"></script>
+<script>
+        const envelope = document.getElementById('envelope');
+envelope.addEventListener('click', () => {
+    envelope.classList.toggle('open');
+});
+function openGift(event) {
+    event.stopPropagation();
+    alert("✨ Chúc mừng! Bạn nhận được một cái ôm từ hệ thống! 🤗\nMã quà tặng: HAPPY2026");
+}
+</script>
 </body>
 </html>
