@@ -20,23 +20,11 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: var(--bg-gradient);
+    background-color: #f5f6fa;
     font-family: 'Arial', sans-serif;
     overflow: hidden;
-    position: relative;
 }
-body::before {
-    content: "❤️";
-    position: absolute;
-    top: -10%;
-    left: 10%;
-    font-size: 20px;
-    opacity: 0.2;
-    animation: backgroundFly 10s infinite linear;
-}
-@keyframes backgroundFly {
-    0% { transform: translateY(110vh) rotate(0deg); }
-    100% { transform: translateY(-10vh) rotate(360deg); }
+
 .container { text-align: center; }
 
 .gift-container {
@@ -76,13 +64,23 @@ body::before {
 }
 
 .letter {
-    position: absolute; top: 60px; left: 20px; width: 260px; height: 180px;
-    background: white; z-index: 1; transition: all 0.8s ease; opacity: 0;
-    border-radius: 10px; box-shadow: 0 0 20px rgba(0,0,0,0.1); overflow: hidden;
+    position: absolute; top: 60px; left: 20px;
+    width: 260px; height: 180px; background-color: white;
+    z-index: 1; transition: all 0.8s ease;
+    opacity: 0; border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    overflow: hidden;
 }
 
-.letter-paper { padding: 20px; height: 100%; display: flex; flex-direction: column; box-sizing: border-box; }
-.letter-content { overflow-y: auto; flex-grow: 1; text-align: left; font-size: 0.95rem; line-height: 1.6; color: #444; }
+.letter-paper {
+    padding: 25px;            /* Tăng khoảng cách lề nội dung */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Đẩy các phần tách rời nhau ra */
+    box-sizing: border-box;
+}
+.letter-content { overflow-y: auto; flex-grow: 1; margin: 10px 0; text-align: left; }
 .letter h3 { margin: 0; color: var(--box-color); text-align: center; }
 .letter p { font-size: 0.95rem; color: #333; line-height: 1.5; }
 
@@ -94,37 +92,38 @@ body::before {
 
 /* HIỆU ỨNG MỞ HỘP */
 .gift-container.active .gift-lid { transform: translateY(-160px) rotate(-10deg); opacity: 0; }
-.gift-container.active .letter { transform: translateY(-260px); height: 400px; opacity: 1; z-index: 10; }
-.gift-container { position: relative; width: 300px; height: 250px; cursor: pointer; }
-.gift-box { position: absolute; bottom: 0; width: 300px; height: 200px; background: var(--box-color); border-radius: 0 0 10px 10px; z-index: 2; }
-.gift-box::after { content: ""; position: absolute; left: 50%; transform: translateX(-50%); width: 50px; height: 100%; background: var(--ribbon-color); }
-.gift-lid { position: absolute; top: 35px; left: -10px; width: 320px; height: 50px; background: #c23616; border-radius: 8px; z-index: 4; transition: all 0.7s ease; }
-.gift-lid::after { content: ""; position: absolute; left: 50%; transform: translateX(-50%); width: 50px; height: 100%; background: var(--ribbon-color); }
+.gift-container.active .letter { transform: translateY(-240px); height: 420px; opacity: 1; z-index: 10; }
 
 /* CSS cho TRÁI TIM RƠI */
-.falling-heart { position: fixed; top: -50px; z-index: 9999; animation: fall linear forwards; }
-@keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+.falling-heart {
+    position: fixed;
+    top: -50px; /* Bắt đầu từ ngoài màn hình phía trên */
+    z-index: 9999;
+    user-select: none;
+    pointer-events: none;
+    animation: fall linear forwards;
+}
 .claim-btn {
-    background: linear-gradient(135deg, #ff4757, #ff6b81);
+    background: linear-gradient(135deg, #ff4757, #ff6b81); /* Màu gradient cho sang */
     color: white;
     border: none;
-    padding: 15px 20px;
-    border-radius: 50px; /* Bo tròn viên thuốc */
+    padding: 15px 25px;       /* Tăng độ dày cho nút */
+    border-radius: 30px;      /* Bo tròn hẳn nhìn sẽ hiện đại hơn */
     font-weight: bold;
-    font-size: 1.1rem;
+    font-size: 1.1rem;        /* Chữ to rõ ràng */
     cursor: pointer;
-    width: 100%;
-    margin-top: 20px;
-    box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
+    width: 90%;               /* Chiếm gần hết chiều ngang tờ giấy */
+    margin: 15px auto;        /* Tạo khoảng cách với đoạn văn phía trên */
+    display: block;           /* Căn giữa nút */
+    box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4); /* Đổ bóng màu đỏ */
     transition: all 0.3s ease;
-    text-transform: uppercase;
-    display: block;
+    text-transform: uppercase; /* Viết hoa toàn bộ cho rõ */
 }
 
 .claim-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 20px rgba(255, 71, 87, 0.6);
-    filter: brightness(1.1);
+    transform: scale(1.05);   /* Nhấn mạnh khi di chuột vào */
+    background: linear-gradient(135deg, #ff6b81, #ff4757);
+    box-shadow: 0 6px 20px rgba(255, 71, 87, 0.6);
 }
 
 .claim-btn:active {
@@ -172,11 +171,13 @@ gift.addEventListener('click', function(e) {
 function startHeartRain(event) {
     event.stopPropagation();
     
-    // Tạo 50 trái tim mưa rơi
-    for (let i = 0; i < 50; i++) {
+    // 1. Tạo hiệu ứng mưa trái tim
+    const heartCount = 50; // Số lượng trái tim rơi
+    for (let i = 0; i < heartCount; i++) {
         createFallingHeart();
     }
 
+    // 2. Hiện mã quà tặng sau khi mưa tim bắt đầu
     setTimeout(() => {
         alert("💖 +55 robux in @Mrbacon0972 to buy Kitkat chocolate 💖\nHave a wonderful day!");
     }, 500);
@@ -184,16 +185,29 @@ function startHeartRain(event) {
 
 function createFallingHeart() {
     const heart = document.createElement('div');
-    heart.innerHTML = ['❤️','💖','🌸','💕'][Math.floor(Math.random()*4)];
+    heart.innerHTML = '❤️';
     heart.className = 'falling-heart';
+    
+    // Vị trí ngang ngẫu nhiên (từ 0 đến 100% chiều rộng màn hình)
     heart.style.left = Math.random() * 100 + 'vw';
+    
+    // Kích thước ngẫu nhiên (từ 15px đến 35px)
     const size = Math.random() * 20 + 15;
     heart.style.fontSize = size + 'px';
+    
+    // Thời gian rơi ngẫu nhiên (từ 2s đến 5s) để tạo hiệu ứng lớp trước lớp sau
     const duration = Math.random() * 3 + 2;
     heart.style.animationDuration = duration + 's';
+    
+    // Độ mờ ngẫu nhiên
     heart.style.opacity = Math.random() * 0.5 + 0.5;
+
     document.body.appendChild(heart);
-    setTimeout(() => { heart.remove(); }, duration * 1000);
+    
+    // Xóa tim khi đã rơi xong để tránh nặng web
+    setTimeout(() => {
+        heart.remove();
+    }, duration * 1000);
 }
     </script>
 </body>
