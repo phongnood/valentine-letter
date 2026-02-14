@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mở Hộp Quà Bí Mật 🎁</title>
+    <title>Hộp Quà Trái Tim 🎁</title>
     <style>
         :root {
     --box-color: #e84118;
@@ -19,19 +19,18 @@ body {
     height: 100vh;
     background-color: #f5f6fa;
     font-family: 'Arial', sans-serif;
+    overflow: hidden; /* Ngăn vỡ giao diện khi tim bay */
 }
 
 .container { text-align: center; }
 
 .gift-container {
     position: relative;
-    width: 300px; /* Tăng kích thước hộp */
+    width: 300px;
     height: 250px;
     cursor: pointer;
-    perspective: 1000px;
 }
 
-/* Thân hộp quà */
 .gift-box {
     position: absolute;
     bottom: 0;
@@ -40,7 +39,6 @@ body {
     background-color: var(--box-color);
     border-radius: 0 0 10px 10px;
     z-index: 2;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 }
 
 .gift-box::after {
@@ -53,7 +51,6 @@ body {
     background-color: var(--ribbon-color);
 }
 
-/* Nắp hộp quà */
 .gift-lid {
     position: absolute;
     top: 35px;
@@ -76,7 +73,6 @@ body {
     background-color: var(--ribbon-color);
 }
 
-/* Tờ thư bên trong (To và dài hơn) */
 .letter {
     position: absolute;
     top: 60px;
@@ -89,53 +85,52 @@ body {
     opacity: 0;
     border-radius: 5px;
     box-shadow: 0 0 15px rgba(0,0,0,0.1);
-    overflow: hidden; /* Để bo góc nội dung bên trong */
+    overflow: hidden;
 }
 
-.letter-paper {
-    padding: 20px;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-.letter-content {
-    overflow-y: auto; /* Tạo thanh cuộn nếu văn bản dài */
-    flex-grow: 1;
-    margin: 10px 0;
-    text-align: left;
-    padding-right: 5px;
-}
-
-/* Tùy chỉnh thanh cuộn cho đẹp */
-.letter-content::-webkit-scrollbar { width: 5px; }
-.letter-content::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
-
+.letter-paper { padding: 20px; height: 100%; display: flex; flex-direction: column; }
+.letter-content { overflow-y: auto; flex-grow: 1; margin: 10px 0; text-align: left; }
 .letter h3 { margin: 0; color: var(--box-color); text-align: center; }
 .letter p { font-size: 0.95rem; color: #333; line-height: 1.5; }
 
 .claim-btn {
-    background-color: #4cd137;
+    background-color: #ff4757;
     color: white;
     border: none;
-    padding: 10px;
+    padding: 12px;
     border-radius: 5px;
     cursor: pointer;
     font-weight: bold;
     width: 100%;
+    transition: background 0.3s;
 }
 
-/* KHI MỞ HỘP */
+/* Hiệu ứng khi mở hộp */
 .gift-container.active .gift-lid {
-    transform: translateY(-150px) rotate(-15deg);
-    opacity: 0; /* Nắp biến mất cho thoáng */
+    transform: translateY(-160px) rotate(-10deg);
+    opacity: 0;
 }
 
 .gift-container.active .letter {
-    transform: translateY(-220px); /* Đẩy thư lên cao hẳn để đọc */
-    height: 350px; /* Phóng to chiều dài tờ thư khi mở */
+    transform: translateY(-240px);
+    height: 380px;
     opacity: 1;
     z-index: 10;
+}
+
+/* Style cho các trái tim bay */
+.flying-heart {
+    position: fixed;
+    font-size: 24px;
+    user-select: none;
+    pointer-events: none;
+    z-index: 9999;
+    animation: fly 2.5s ease-out forwards;
+}
+
+@keyframes fly {
+    0% { transform: translate(0, 0) scale(1); opacity: 1; }
+    100% { transform: translate(var(--tx), var(--ty)) rotate(var(--tr)) scale(0); opacity: 0; }
 }
 
 .hint { margin-top: 30px; color: #7f8c8d; }
@@ -146,30 +141,76 @@ body {
     <div class="container">
         <div class="gift-container" id="giftClick">
             <div class="gift-lid"></div>
-            
-            <div class="gift-box">
-                <div class="bow"></div>
-            </div>
+            <div class="gift-box"></div>
 
             <div class="letter" id="letter">
-                <h3>Gửi Bạn! 💌</h3>
-                <p>Chúc mừng bạn đã nhận được món quà này. Hy vọng nó làm bạn mỉm cười!</p>
-                <button class="claim-btn" onclick="showReward(event)">Nhận Quà Ngay</button>
+                <div class="letter-paper">
+                    <h3>Gửi Người Thương! 💌</h3>
+                    <div class="letter-content">
+                        <p>Chào bạn, đây là bức thư dài mà bạn muốn gửi gắm. Bạn có thể viết về những kỷ niệm, lời cảm ơn hoặc những lời chúc tốt đẹp nhất tại đây...</p>
+                        <p>Dòng tâm sự này sẽ tự động có thanh cuộn nếu bạn viết quá dài, giúp bức thư luôn gọn gàng và tinh tế bên trong hộp quà.</p>
+                    </div>
+                    <button class="claim-btn" onclick="showReward(event)">🎁 Nhận Quà</button>
+                </div>
             </div>
         </div>
-        <p class="hint">Bấm vào hộp quà để mở</p>
+        <p class="hint">Bấm vào hộp quà để đọc thư</p>
     </div>
 
     <script>
-       const gift = document.getElementById('giftClick');
+        const gift = document.getElementById('giftClick');
 
-gift.addEventListener('click', function() {
-    this.classList.toggle('active');
+// Mở/Đóng hộp quà
+gift.addEventListener('click', function(e) {
+    // Chỉ mở nếu không bấm vào nút nhận quà
+    if (!e.target.classList.contains('claim-btn')) {
+        this.classList.toggle('active');
+    }
 });
 
 function showReward(event) {
-    event.stopPropagation();
-    alert("🎉 Chúc mừng! Bạn đã nhận được món quà tinh thần lớn nhất! 🎉");
+    event.stopPropagation(); // Ngăn sự kiện đóng hộp
+    
+    // 1. Tạo hiệu ứng bùng nổ trái tim từ vị trí nút bấm
+    const btn = event.target;
+    const rect = btn.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    for (let i = 0; i < 30; i++) {
+        createHeart(centerX, centerY);
+    }
+
+    // 2. Hiện thông báo kèm mã quà tặng
+    setTimeout(() => {
+        alert("💖 MÓN QUÀ CỦA BẠN 💖\n\nMã nhận quà: LOVE-9999-2026\n(Hãy chụp màn hình lại nhé!)");
+    }, 500);
+}
+
+function createHeart(x, y) {
+    const heart = document.createElement('div');
+    heart.innerHTML = '❤️';
+    heart.className = 'flying-heart';
+    
+    // Tọa độ xuất phát
+    heart.style.left = x + 'px';
+    heart.style.top = y + 'px';
+    
+    // Tạo các biến ngẫu nhiên cho hướng bay (CSS Variables)
+    const tx = (Math.random() - 0.5) * 400; // Bay ngang sang trái/phải 200px
+    const ty = - (Math.random() * 400 + 100); // Bay lên trên từ 100-500px
+    const tr = Math.random() * 360; // Xoay ngẫu nhiên
+    
+    heart.style.setProperty('--tx', `${tx}px`);
+    heart.style.setProperty('--ty', `${ty}px`);
+    heart.style.setProperty('--tr', `${tr}deg`);
+    
+    document.body.appendChild(heart);
+    
+    // Xóa tim sau khi diễn xong hoạt ảnh
+    setTimeout(() => {
+        heart.remove();
+    }, 2500);
 }
     </script>
 </body>
