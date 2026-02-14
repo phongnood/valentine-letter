@@ -27,7 +27,6 @@ body {
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
     cursor: pointer;
-    z-index: 1;
 }
 
 .flap {
@@ -56,75 +55,66 @@ body {
     border-bottom-right-radius: 10px;
 }
 
-/* Thiết kế tờ thư Hình Trái Tim */
+/* Tờ thư trái tim */
 .letter {
     position: absolute;
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    width: 200px;
+    width: 220px;
     height: 200px;
-    transition: transform 0.7s ease;
+    transition: transform 0.7s ease, opacity 0.5s;
     z-index: 1;
-}
-
-.heart-shape {
-    position: relative;
-    width: 150px;
-    height: 150px;
-    background-color: #ff4d6d; /* Màu của trái tim */
-    margin: 30px auto;
-    transform: rotate(-45deg);
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
-.heart-shape:before,
-.heart-shape:after {
-    content: "";
-    position: absolute;
-    width: 150px;
-    height: 150px;
-    background-color: #ff4d6d;
-    border-radius: 50%;
+.heart-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
 }
 
-.heart-shape:before { top: -75px; left: 0; }
-.heart-shape:after { left: 75px; top: 0; }
+.heart-svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2));
+}
 
-/* Nội dung bên trong trái tim */
 .content {
-    transform: rotate(45deg); /* Xoay nội dung lại cho thẳng */
-    z-index: 10;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     color: white;
     text-align: center;
-    width: 180px;
+    width: 160px;
 }
 
-.content h3 { font-size: 1.1rem; margin: 0; }
-.content p { font-size: 0.8rem; margin: 5px 0; }
+.content h3 { margin: 0; font-size: 1.2rem; }
+.content p { margin: 5px 0; font-size: 0.8rem; }
 
 .gift-btn {
     background: white;
     color: #ff4d6d;
     border: none;
-    padding: 5px 10px;
-    border-radius: 15px;
+    padding: 6px 12px;
+    border-radius: 20px;
     font-weight: bold;
     cursor: pointer;
-    font-size: 0.7rem;
+    font-size: 0.8rem;
+    margin-top: 5px;
 }
 
-/* Hiệu ứng Mở */
+/* Hiệu ứng khi mở */
 .envelope-wrapper.open .flap {
     transform: rotateX(180deg);
     z-index: 0;
 }
 
 .envelope-wrapper.open .letter {
-    transform: translate(-50%, -150px); /* Đẩy trái tim lên cao */
+    transform: translate(-50%, -160px) scale(1.1); /* Đẩy lên cao và to ra */
     z-index: 4;
 }
 
@@ -159,14 +149,16 @@ envelope.addEventListener('click', () => {
 });
 
 function openGift(event) {
-    event.stopPropagation();
+    event.stopPropagation(); // Không cho đóng bao thư khi bấm nút
     
-    // Tạo hiệu ứng mưa trái tim nhỏ
-    for (let i = 0; i < 40; i++) {
-        setTimeout(createHeart, i * 50);
+    // Hiệu ứng tim bay
+    for (let i = 0; i < 50; i++) {
+        setTimeout(createHeart, i * 30);
     }
     
-    alert("💖 Trái tim đã mở! Chúc bạn một ngày tràn đầy yêu thương! 💖");
+    setTimeout(() => {
+        alert("💝 Chúc mừng ngày 14/2! Bạn nhận được một phần quà bí mật! 💝");
+    }, 300);
 }
 
 function createHeart() {
@@ -176,7 +168,7 @@ function createHeart() {
     heart.style.left = Math.random() * 100 + 'vw';
     heart.style.top = '100vh';
     heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
-    heart.style.zIndex = '100';
+    heart.style.zIndex = '1000';
     heart.style.transition = 'transform 3s ease-out, opacity 3s';
     
     document.body.appendChild(heart);
