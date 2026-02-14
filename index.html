@@ -5,38 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hộp Quà Bí Mật 💌</title>
     <style>
-        body {
+body {
     margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #ffe5ec; /* Màu nền hồng nhạt */
+    background-color: #fff0f3;
     font-family: 'Arial', sans-serif;
+    overflow: hidden;
 }
 
-.container {
-    text-align: center;
-}
+.container { text-align: center; }
 
 /* Bao thư */
 .envelope-wrapper {
     position: relative;
     width: 300px;
     height: 200px;
-    background-color: #ff758f; /* Màu bao thư */
+    background-color: #ff758f;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
     cursor: pointer;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease;
+    z-index: 1;
 }
 
-.envelope-wrapper:hover {
-    transform: translateY(-5px);
-}
-
-/* Nắp bao thư (Tam giác phía trên) */
 .flap {
     position: absolute;
     top: 0;
@@ -44,13 +37,12 @@
     height: 0;
     border-left: 150px solid transparent;
     border-right: 150px solid transparent;
-    border-top: 110px solid #ff4d6d; /* Màu nắp đậm hơn */
+    border-top: 110px solid #ff4d6d;
     transform-origin: top;
-    transition: transform 0.5s ease, z-index 0.2s;
+    transition: transform 0.5s ease;
     z-index: 3;
 }
 
-/* Thân trước của bao thư (Tạo chiều sâu) */
 .body {
     position: absolute;
     bottom: 0;
@@ -64,73 +56,79 @@
     border-bottom-right-radius: 10px;
 }
 
-/* Tờ giấy bên trong */
+/* Thiết kế tờ thư Hình Trái Tim */
 .letter {
     position: absolute;
-    bottom: 10px;
-    left: 10px;
-    width: 280px;
-    height: 170px;
-    background: white;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 200px;
+    transition: transform 0.7s ease;
     z-index: 1;
-    transition: transform 0.6s ease;
-    padding: 15px;
-    box-sizing: border-box;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.05);
 }
 
-.content h3 {
-    margin: 0 0 10px 0;
-    color: #ff4d6d;
-    font-size: 1.2rem;
+.heart-shape {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    background-color: #ff4d6d; /* Màu của trái tim */
+    margin: 30px auto;
+    transform: rotate(-45deg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
-.content p {
-    font-size: 0.9rem;
-    color: #555;
-    line-height: 1.4;
-}
-
-/* Nút nhận quà */
-.gift-btn {
+.heart-shape:before,
+.heart-shape:after {
+    content: "";
+    position: absolute;
+    width: 150px;
+    height: 150px;
     background-color: #ff4d6d;
+    border-radius: 50%;
+}
+
+.heart-shape:before { top: -75px; left: 0; }
+.heart-shape:after { left: 75px; top: 0; }
+
+/* Nội dung bên trong trái tim */
+.content {
+    transform: rotate(45deg); /* Xoay nội dung lại cho thẳng */
+    z-index: 10;
     color: white;
+    text-align: center;
+    width: 180px;
+}
+
+.content h3 { font-size: 1.1rem; margin: 0; }
+.content p { font-size: 0.8rem; margin: 5px 0; }
+
+.gift-btn {
+    background: white;
+    color: #ff4d6d;
     border: none;
-    padding: 8px 15px;
-    border-radius: 20px;
-    margin-top: 10px;
-    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 15px;
     font-weight: bold;
-    transition: background 0.3s;
+    cursor: pointer;
+    font-size: 0.7rem;
 }
 
-.gift-btn:hover {
-    background-color: #c9184a;
-}
-
-/* HIỆU ỨNG KHI MỞ THƯ */
+/* Hiệu ứng Mở */
 .envelope-wrapper.open .flap {
     transform: rotateX(180deg);
-    z-index: 0; /* Cho nắp ra sau khi mở */
+    z-index: 0;
 }
 
 .envelope-wrapper.open .letter {
-    transform: translateY(-110px); /* Đẩy tờ giấy lên */
-    z-index: 4; /* Đưa tờ giấy lên trên cùng */
+    transform: translate(-50%, -150px); /* Đẩy trái tim lên cao */
+    z-index: 4;
 }
 
-.instruction {
-    margin-top: 30px;
-    color: #c9184a;
-    font-style: italic;
-    animation: bounce 2s infinite;
-}
-
-@keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-}
+.instruction { margin-top: 50px; color: #ff4d6d; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -155,12 +153,40 @@
     </div>
 <script>
         const envelope = document.getElementById('envelope');
+
 envelope.addEventListener('click', () => {
     envelope.classList.toggle('open');
 });
+
 function openGift(event) {
     event.stopPropagation();
-    alert("✨ Chúc mừng! Bạn nhận được một cái ôm từ hệ thống! 🤗\nMã quà tặng: HAPPY2026");
+    
+    // Tạo hiệu ứng mưa trái tim nhỏ
+    for (let i = 0; i < 40; i++) {
+        setTimeout(createHeart, i * 50);
+    }
+    
+    alert("💖 Trái tim đã mở! Chúc bạn một ngày tràn đầy yêu thương! 💖");
+}
+
+function createHeart() {
+    const heart = document.createElement('div');
+    heart.innerHTML = '❤️';
+    heart.style.position = 'fixed';
+    heart.style.left = Math.random() * 100 + 'vw';
+    heart.style.top = '100vh';
+    heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+    heart.style.zIndex = '100';
+    heart.style.transition = 'transform 3s ease-out, opacity 3s';
+    
+    document.body.appendChild(heart);
+    
+    setTimeout(() => {
+        heart.style.transform = `translateY(-120vh) rotate(${Math.random() * 360}deg)`;
+        heart.style.opacity = '0';
+    }, 50);
+    
+    setTimeout(() => heart.remove(), 3000);
 }
 </script>
 </body>
