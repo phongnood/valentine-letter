@@ -3,204 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hộp Quà Bí Mật 💌</title>
+    <title>Mở Hộp Quà Bí Mật 🎁</title>
     <style>
+        :root {
+    --box-color: #ff4757;
+    --lid-color: #ff6b81;
+    --ribbon-color: #f1c40f;
+}
+
 body {
     margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #fff0f3;
-    font-family: 'Arial', sans-serif;
+    background-color: #f7f1e3;
+    font-family: 'Segoe UI', sans-serif;
 }
 
 .container { text-align: center; }
 
-/* Bao thư */
-.envelope-wrapper {
+.gift-container {
     position: relative;
-    width: 300px;
+    width: 200px;
     height: 200px;
-    background-color: #ff758f;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
     cursor: pointer;
-    /* Dấu tất cả những gì lòi ra ngoài khi chưa mở */
-    overflow: visible; 
+    transition: transform 0.3s;
 }
 
-.envelope {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    background-color: #ff758f;
-    /* Cắt bớt phần thừa phía trên bao thư để dấu trái tim */
-    overflow: hidden; 
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
+/* Thân hộp quà */
+.gift-box {
+    position: absolute;
+    bottom: 0;
+    width: 200px;
+    height: 150px;
+    background-color: var(--box-color);
+    border-radius: 0 0 10px 10px;
     z-index: 2;
 }
 
-.flap {
+/* Nắp hộp quà */
+.gift-lid {
     position: absolute;
-    top: 0;
-    width: 0;
-    height: 0;
-    border-left: 150px solid transparent;
-    border-right: 150px solid transparent;
-    border-top: 110px solid #ff4d6d;
-    transform-origin: top;
-    transition: transform 0.5s ease;
-    z-index: 5; /* Nắp nằm trên cùng */
+    top: 20px;
+    left: -10px;
+    width: 220px;
+    height: 40px;
+    background-color: var(--lid-color);
+    border-radius: 5px;
+    z-index: 4;
+    transition: all 0.6s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
-.body {
-    position: absolute;
-    bottom: 0;
-    width: 0;
-    height: 0;
-    border-left: 150px solid #ff8fa3;
-    border-right: 150px solid #ff8fa3;
-    border-bottom: 100px solid #ffb3c1;
-    z-index: 4; /* Thân bao thư nằm trên tờ thư */
-}
-
-/* Tờ thư trái tim */
-.letter {
-    position: absolute;
-    bottom: -150px; /* Dấu sâu xuống dưới */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 200px;
-    height: 200px;
-    transition: all 0.7s ease;
-    z-index: 1;
-}
-
-.heart {
-    position: relative;
-    width: 150px;
-    height: 150px;
-    background-color: #ff4d6d;
-    margin: 30px auto;
-    transform: rotate(-45deg);
-}
-
-.heart::before, .heart::after {
+/* Ruy băng */
+.gift-box::after, .gift-lid::after {
     content: "";
     position: absolute;
-    width: 150px;
-    height: 150px;
-    background-color: #ff4d6d;
-    border-radius: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 100%;
+    background-color: var(--ribbon-color);
 }
 
-.heart::before { top: -75px; left: 0; }
-.heart::after { left: 75px; top: 0; }
-
-.content {
+/* Tờ thư bên trong */
+.letter {
     position: absolute;
-    transform: rotate(45deg); /* Xoay nội dung lại cho thẳng */
-    z-index: 10;
-    color: white;
-    text-align: center;
+    top: 50px;
+    left: 10px;
     width: 180px;
-    top: 10%;
-    left: -10%;
+    height: 130px;
+    background-color: white;
+    padding: 15px;
+    box-sizing: border-box;
+    text-align: center;
+    border-radius: 5px;
+    z-index: 1; /* Nằm dưới hộp */
+    transition: all 0.8s ease;
+    opacity: 0;
+    box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
 }
 
-.content h3 { margin: 0; font-size: 1.1rem; }
-.content p { font-size: 0.8rem; margin: 10px 0; }
+.letter h3 { margin: 0; color: #ff4757; font-size: 1.1rem; }
+.letter p { font-size: 0.8rem; color: #333; margin: 10px 0; }
 
-.gift-btn {
-    background: white;
-    color: #ff4d6d;
+.claim-btn {
+    background-color: #2ed573;
+    color: white;
     border: none;
-    padding: 6px 15px;
-    border-radius: 20px;
-    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 5px;
     cursor: pointer;
-    font-size: 0.8rem;
+    font-weight: bold;
 }
 
-/* HIỆU ỨNG MỞ */
-.envelope-wrapper.open .flap {
-    transform: rotateX(180deg);
-    z-index: 0;
+/* HIỆU ỨNG KHI MỞ HỘP (Class .active) */
+.gift-container.active .gift-lid {
+    transform: translateY(-120px) rotate(-10deg);
+    opacity: 0.8;
 }
 
-.envelope-wrapper.open .envelope {
-    overflow: visible; /* Cho phép trái tim bay ra ngoài khi đã mở */
+.gift-container.active .letter {
+    transform: translateY(-130px);
+    opacity: 1;
+    z-index: 3; /* Trồi lên trên thân hộp */
 }
 
-.envelope-wrapper.open .letter {
-    transform: translate(-50%, -200px); /* Đẩy trái tim lên trên */
-    z-index: 6; /* Cho hiện lên trên cả nắp và thân */
-}
-
-.instruction { margin-top: 50px; color: #ff4d6d; font-weight: bold; }
+.hint { margin-top: 40px; color: #888; font-weight: 500; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <div class="envelope-wrapper" id="envelope">
-            <div class="envelope">
-                <div class="flap"></div>
-                
-                <div class="body"></div>
-                
-                <div class="letter">
-                    <div class="content">
-                        <h3>Gửi bạn! 🌸</h3>
-                        <p>Một món quà nhỏ dành cho ngày hôm nay thêm ngọt ngào.</p>
-                        <button class="gift-btn" onclick="openGift(event)">🎁 Nhận Quà</button>
-                    </div>
-                </div>
+        <div class="gift-container" id="giftClick">
+            <div class="gift-lid"></div>
+            
+            <div class="gift-box">
+                <div class="bow"></div>
+            </div>
+
+            <div class="letter" id="letter">
+                <h3>Gửi Bạn! 💌</h3>
+                <p>Chúc mừng bạn đã nhận được món quà này. Hy vọng nó làm bạn mỉm cười!</p>
+                <button class="claim-btn" onclick="showReward(event)">Nhận Quà Ngay</button>
             </div>
         </div>
-        <p class="instruction">Chạm vào bao thư để mở nhé!</p>
+        <p class="hint">Bấm vào hộp quà để mở</p>
     </div>
-<script>
-        const envelope = document.getElementById('envelope');
 
-envelope.addEventListener('click', () => {
-    envelope.classList.toggle('open');
+    <script>
+       const gift = document.getElementById('giftClick');
+
+gift.addEventListener('click', function() {
+    this.classList.toggle('active');
 });
 
-function openGift(event) {
+function showReward(event) {
+    // Ngăn chặn sự kiện click vào hộp khi bấm nút nhận quà
     event.stopPropagation();
     
-    // Hiệu ứng trái tim nhỏ bay lên
-    for (let i = 0; i < 30; i++) {
-        setTimeout(createHeart, i * 50);
-    }
-    
-    setTimeout(() => {
-        alert("💖 Chúc mừng bạn đã mở món quà thành công! 💖");
-    }, 500);
-}
-
-function createHeart() {
-    const heart = document.createElement('div');
-    heart.innerHTML = '❤️';
-    heart.style.position = 'fixed';
-    heart.style.left = Math.random() * 100 + 'vw';
-    heart.style.top = '100vh';
-    heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
-    heart.style.zIndex = '1000';
-    heart.style.transition = 'transform 3s ease-out, opacity 3s';
-    
-    document.body.appendChild(heart);
-    
-    setTimeout(() => {
-        heart.style.transform = `translateY(-120vh) rotate(${Math.random() * 360}deg)`;
-        heart.style.opacity = '0';
-    }, 50);
-    
-    setTimeout(() => heart.remove(), 3000);
-}
-</script>
+    // Bạn có thể đổi thông báo này thành mã giảm giá hoặc link quà tặng
+    alert("🎁 Bạn nhận được: Một Voucher giảm giá 99%!\nMã: HAPPYGIFT2026");
+}  
+    </script>
 </body>
 </html>
