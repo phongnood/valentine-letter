@@ -13,7 +13,6 @@ body {
     height: 100vh;
     background-color: #fff0f3;
     font-family: 'Arial', sans-serif;
-    overflow: hidden;
 }
 
 .container { text-align: center; }
@@ -27,7 +26,20 @@ body {
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
     cursor: pointer;
-    margin-top: 100px; /* Tạo không gian để trái tim trồi lên */
+    /* Dấu tất cả những gì lòi ra ngoài khi chưa mở */
+    overflow: visible; 
+}
+
+.envelope {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: #ff758f;
+    /* Cắt bớt phần thừa phía trên bao thư để dấu trái tim */
+    overflow: hidden; 
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    z-index: 2;
 }
 
 .flap {
@@ -40,7 +52,7 @@ body {
     border-top: 110px solid #ff4d6d;
     transform-origin: top;
     transition: transform 0.5s ease;
-    z-index: 3;
+    z-index: 5; /* Nắp nằm trên cùng */
 }
 
 .body {
@@ -51,62 +63,83 @@ body {
     border-left: 150px solid #ff8fa3;
     border-right: 150px solid #ff8fa3;
     border-bottom: 100px solid #ffb3c1;
-    z-index: 2;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
+    z-index: 4; /* Thân bao thư nằm trên tờ thư */
 }
 
-/* Tờ thư hình trái tim */
+/* Tờ thư trái tim */
 .letter {
     position: absolute;
-    bottom: 0;
+    bottom: -150px; /* Dấu sâu xuống dưới */
     left: 50%;
     transform: translateX(-50%);
-    width: 250px;
-    height: 220px;
+    width: 200px;
+    height: 200px;
     transition: all 0.7s ease;
-    z-index: 1; /* Nằm dưới lúc chưa mở */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* Vẽ hình trái tim bằng clip-path (chuẩn và hiện đại nhất) */
-    background-color: #ff4d6d;
-    clip-path: path('M125,40 C125,40 110,0 60,0 C20,0 0,35 0,70 C0,130 125,220 125,220 C125,220 250,130 250,70 C250,35 230,0 190,0 C140,0 125,40 125,40 Z');
+    z-index: 1;
 }
+
+.heart {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    background-color: #ff4d6d;
+    margin: 30px auto;
+    transform: rotate(-45deg);
+}
+
+.heart::before, .heart::after {
+    content: "";
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    background-color: #ff4d6d;
+    border-radius: 50%;
+}
+
+.heart::before { top: -75px; left: 0; }
+.heart::after { left: 75px; top: 0; }
 
 .content {
+    position: absolute;
+    transform: rotate(45deg); /* Xoay nội dung lại cho thẳng */
+    z-index: 10;
     color: white;
     text-align: center;
-    padding: 20px;
-    margin-top: -30px; /* Chỉnh chữ lên giữa phần bầu của tim */
+    width: 180px;
+    top: 10%;
+    left: -10%;
 }
 
-.content h3 { margin: 0; font-size: 1.3rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
-.content p { margin: 10px 0; font-size: 0.9rem; line-height: 1.2; }
+.content h3 { margin: 0; font-size: 1.1rem; }
+.content p { font-size: 0.8rem; margin: 10px 0; }
 
 .gift-btn {
     background: white;
     color: #ff4d6d;
     border: none;
-    padding: 8px 15px;
+    padding: 6px 15px;
     border-radius: 20px;
     font-weight: bold;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    font-size: 0.8rem;
 }
 
-/* Hiệu ứng khi mở */
+/* HIỆU ỨNG MỞ */
 .envelope-wrapper.open .flap {
     transform: rotateX(180deg);
     z-index: 0;
 }
 
-.envelope-wrapper.open .letter {
-    transform: translate(-50%, -180px) scale(1.1); /* Trồi lên trên bao thư */
-    z-index: 4; /* Đưa lên trên cùng để thấy rõ trái tim */
+.envelope-wrapper.open .envelope {
+    overflow: visible; /* Cho phép trái tim bay ra ngoài khi đã mở */
 }
 
-.instruction { margin-top: 40px; color: #ff4d6d; font-weight: bold; }
+.envelope-wrapper.open .letter {
+    transform: translate(-50%, -200px); /* Đẩy trái tim lên trên */
+    z-index: 6; /* Cho hiện lên trên cả nắp và thân */
+}
+
+.instruction { margin-top: 50px; color: #ff4d6d; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -137,16 +170,16 @@ envelope.addEventListener('click', () => {
 });
 
 function openGift(event) {
-    event.stopPropagation(); // Không cho đóng bao thư khi bấm nút
+    event.stopPropagation();
     
-    // Hiệu ứng tim bay
-    for (let i = 0; i < 50; i++) {
-        setTimeout(createHeart, i * 30);
+    // Hiệu ứng trái tim nhỏ bay lên
+    for (let i = 0; i < 30; i++) {
+        setTimeout(createHeart, i * 50);
     }
     
     setTimeout(() => {
-        alert("💝 Chúc mừng ngày 14/2! Bạn nhận được một phần quà bí mật! 💝");
-    }, 300);
+        alert("💖 Chúc mừng bạn đã mở món quà thành công! 💖");
+    }, 500);
 }
 
 function createHeart() {
