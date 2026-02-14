@@ -69,7 +69,14 @@ body {
     overflow: hidden;
 }
 
-.letter-paper { padding: 20px; height: 100%; display: flex; flex-direction: column; }
+.letter-paper {
+    padding: 25px;            /* Tăng khoảng cách lề nội dung */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Đẩy các phần tách rời nhau ra */
+    box-sizing: border-box;
+}
 .letter-content { overflow-y: auto; flex-grow: 1; margin: 10px 0; text-align: left; }
 .letter h3 { margin: 0; color: var(--box-color); text-align: center; }
 .letter p { font-size: 0.95rem; color: #333; line-height: 1.5; }
@@ -93,7 +100,32 @@ body {
     pointer-events: none;
     animation: fall linear forwards;
 }
+.claim-btn {
+    background: linear-gradient(135deg, #ff4757, #ff6b81); /* Màu gradient cho sang */
+    color: white;
+    border: none;
+    padding: 15px 25px;       /* Tăng độ dày cho nút */
+    border-radius: 30px;      /* Bo tròn hẳn nhìn sẽ hiện đại hơn */
+    font-weight: bold;
+    font-size: 1.1rem;        /* Chữ to rõ ràng */
+    cursor: pointer;
+    width: 90%;               /* Chiếm gần hết chiều ngang tờ giấy */
+    margin: 15px auto;        /* Tạo khoảng cách với đoạn văn phía trên */
+    display: block;           /* Căn giữa nút */
+    box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4); /* Đổ bóng màu đỏ */
+    transition: all 0.3s ease;
+    text-transform: uppercase; /* Viết hoa toàn bộ cho rõ */
+}
 
+.claim-btn:hover {
+    transform: scale(1.05);   /* Nhấn mạnh khi di chuột vào */
+    background: linear-gradient(135deg, #ff6b81, #ff4757);
+    box-shadow: 0 6px 20px rgba(255, 71, 87, 0.6);
+}
+
+.claim-btn:active {
+    transform: scale(0.95);   /* Hiệu ứng lún xuống khi bấm */
+}
 @keyframes fall {
     to {
         transform: translateY(110vh) rotate(360deg); /* Rơi xuống quá đáy màn hình */
