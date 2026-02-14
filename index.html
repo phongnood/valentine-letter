@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hộp Quà Trái Tim 🎁</title>
+    <title>Hộp Quà Mưa Trái Tim 🎁</title>
     <style>
         :root {
     --box-color: #e84118;
@@ -19,7 +19,7 @@ body {
     height: 100vh;
     background-color: #f5f6fa;
     font-family: 'Arial', sans-serif;
-    overflow: hidden; /* Ngăn vỡ giao diện khi tim bay */
+    overflow: hidden;
 }
 
 .container { text-align: center; }
@@ -43,47 +43,28 @@ body {
 
 .gift-box::after {
     content: "";
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 50px;
-    height: 100%;
-    background-color: var(--ribbon-color);
+    position: absolute; left: 50%; transform: translateX(-50%);
+    width: 50px; height: 100%; background-color: var(--ribbon-color);
 }
 
 .gift-lid {
-    position: absolute;
-    top: 35px;
-    left: -10px;
-    width: 320px;
-    height: 50px;
-    background-color: var(--lid-color);
-    border-radius: 8px;
-    z-index: 4;
+    position: absolute; top: 35px; left: -10px;
+    width: 320px; height: 50px; background-color: var(--lid-color);
+    border-radius: 8px; z-index: 4;
     transition: all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .gift-lid::after {
     content: "";
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 50px;
-    height: 100%;
-    background-color: var(--ribbon-color);
+    position: absolute; left: 50%; transform: translateX(-50%);
+    width: 50px; height: 100%; background-color: var(--ribbon-color);
 }
 
 .letter {
-    position: absolute;
-    top: 60px;
-    left: 20px;
-    width: 260px;
-    height: 180px;
-    background-color: white;
-    z-index: 1;
-    transition: all 0.8s ease;
-    opacity: 0;
-    border-radius: 5px;
+    position: absolute; top: 60px; left: 20px;
+    width: 260px; height: 180px; background-color: white;
+    z-index: 1; transition: all 0.8s ease;
+    opacity: 0; border-radius: 5px;
     box-shadow: 0 0 15px rgba(0,0,0,0.1);
     overflow: hidden;
 }
@@ -95,42 +76,28 @@ body {
 
 .claim-btn {
     background-color: #ff4757;
-    color: white;
-    border: none;
-    padding: 12px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    width: 100%;
-    transition: background 0.3s;
+    color: white; border: none; padding: 12px;
+    border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%;
 }
 
-/* Hiệu ứng khi mở hộp */
-.gift-container.active .gift-lid {
-    transform: translateY(-160px) rotate(-10deg);
-    opacity: 0;
-}
+/* HIỆU ỨNG MỞ HỘP */
+.gift-container.active .gift-lid { transform: translateY(-160px) rotate(-10deg); opacity: 0; }
+.gift-container.active .letter { transform: translateY(-240px); height: 380px; opacity: 1; z-index: 10; }
 
-.gift-container.active .letter {
-    transform: translateY(-240px);
-    height: 380px;
-    opacity: 1;
-    z-index: 10;
-}
-
-/* Style cho các trái tim bay */
-.flying-heart {
+/* CSS cho TRÁI TIM RƠI */
+.falling-heart {
     position: fixed;
-    font-size: 24px;
+    top: -50px; /* Bắt đầu từ ngoài màn hình phía trên */
+    z-index: 9999;
     user-select: none;
     pointer-events: none;
-    z-index: 9999;
-    animation: fly 2.5s ease-out forwards;
+    animation: fall linear forwards;
 }
 
-@keyframes fly {
-    0% { transform: translate(0, 0) scale(1); opacity: 1; }
-    100% { transform: translate(var(--tx), var(--ty)) rotate(var(--tr)) scale(0); opacity: 0; }
+@keyframes fall {
+    to {
+        transform: translateY(110vh) rotate(360deg); /* Rơi xuống quá đáy màn hình */
+    }
 }
 
 .hint { margin-top: 30px; color: #7f8c8d; }
@@ -145,72 +112,67 @@ body {
 
             <div class="letter" id="letter">
                 <div class="letter-paper">
-                    <h3>Gửi Người Thương! 💌</h3>
+                    <h3>Gửi Bạn! 💌</h3>
                     <div class="letter-content">
-                        <p>Chào bạn, đây là bức thư dài mà bạn muốn gửi gắm. Bạn có thể viết về những kỷ niệm, lời cảm ơn hoặc những lời chúc tốt đẹp nhất tại đây...</p>
-                        <p>Dòng tâm sự này sẽ tự động có thanh cuộn nếu bạn viết quá dài, giúp bức thư luôn gọn gàng và tinh tế bên trong hộp quà.</p>
+                        <p>Chào bạn! Đây là món quà bất ngờ dành riêng cho bạn. Chúc bạn có một ngày thật nhiều niềm vui và hạnh phúc bên những người thân yêu.</p>
+                        <p>Hy vọng hiệu ứng mưa tim này sẽ khiến bạn cảm thấy ấm áp hơn. Đừng quên nhận mã quà tặng ở nút bên dưới nhé!</p>
                     </div>
-                    <button class="claim-btn" onclick="showReward(event)">🎁 Nhận Quà</button>
+                    <button class="claim-btn" onclick="startHeartRain(event)">🎁 Nhận Quà</button>
                 </div>
             </div>
         </div>
-        <p class="hint">Bấm vào hộp quà để đọc thư</p>
+        <p class="hint">Bấm vào hộp quà để mở</p>
     </div>
 
     <script>
         const gift = document.getElementById('giftClick');
 
-// Mở/Đóng hộp quà
 gift.addEventListener('click', function(e) {
-    // Chỉ mở nếu không bấm vào nút nhận quà
     if (!e.target.classList.contains('claim-btn')) {
         this.classList.toggle('active');
     }
 });
 
-function showReward(event) {
-    event.stopPropagation(); // Ngăn sự kiện đóng hộp
+function startHeartRain(event) {
+    event.stopPropagation();
     
-    // 1. Tạo hiệu ứng bùng nổ trái tim từ vị trí nút bấm
-    const btn = event.target;
-    const rect = btn.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-
-    for (let i = 0; i < 30; i++) {
-        createHeart(centerX, centerY);
+    // 1. Tạo hiệu ứng mưa trái tim
+    const heartCount = 50; // Số lượng trái tim rơi
+    for (let i = 0; i < heartCount; i++) {
+        createFallingHeart();
     }
 
-    // 2. Hiện thông báo kèm mã quà tặng
+    // 2. Hiện mã quà tặng sau khi mưa tim bắt đầu
     setTimeout(() => {
-        alert("💖 MÓN QUÀ CỦA BẠN 💖\n\nMã nhận quà: LOVE-9999-2026\n(Hãy chụp màn hình lại nhé!)");
+        alert("💖 MÃ QUÀ TẶNG CỦA BẠN: MUATIM2026 💖\nChúc bạn một ngày ngọt ngào!");
     }, 500);
 }
 
-function createHeart(x, y) {
+function createFallingHeart() {
     const heart = document.createElement('div');
     heart.innerHTML = '❤️';
-    heart.className = 'flying-heart';
+    heart.className = 'falling-heart';
     
-    // Tọa độ xuất phát
-    heart.style.left = x + 'px';
-    heart.style.top = y + 'px';
+    // Vị trí ngang ngẫu nhiên (từ 0 đến 100% chiều rộng màn hình)
+    heart.style.left = Math.random() * 100 + 'vw';
     
-    // Tạo các biến ngẫu nhiên cho hướng bay (CSS Variables)
-    const tx = (Math.random() - 0.5) * 400; // Bay ngang sang trái/phải 200px
-    const ty = - (Math.random() * 400 + 100); // Bay lên trên từ 100-500px
-    const tr = Math.random() * 360; // Xoay ngẫu nhiên
+    // Kích thước ngẫu nhiên (từ 15px đến 35px)
+    const size = Math.random() * 20 + 15;
+    heart.style.fontSize = size + 'px';
     
-    heart.style.setProperty('--tx', `${tx}px`);
-    heart.style.setProperty('--ty', `${ty}px`);
-    heart.style.setProperty('--tr', `${tr}deg`);
+    // Thời gian rơi ngẫu nhiên (từ 2s đến 5s) để tạo hiệu ứng lớp trước lớp sau
+    const duration = Math.random() * 3 + 2;
+    heart.style.animationDuration = duration + 's';
     
+    // Độ mờ ngẫu nhiên
+    heart.style.opacity = Math.random() * 0.5 + 0.5;
+
     document.body.appendChild(heart);
     
-    // Xóa tim sau khi diễn xong hoạt ảnh
+    // Xóa tim khi đã rơi xong để tránh nặng web
     setTimeout(() => {
         heart.remove();
-    }, 2500);
+    }, duration * 1000);
 }
     </script>
 </body>
